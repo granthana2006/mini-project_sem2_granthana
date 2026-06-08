@@ -104,3 +104,92 @@ void drawCircle(int cx, int cy, int r)
         }
     }
 }
+// Add Object
+void addObject()
+{
+    char shape;
+
+    printf("\nChoose Shape:\n");
+    printf("L - Line\n");
+    printf("R - Rectangle\n");
+    printf("T - Triangle\n");
+    printf("C - Circle\n");
+
+    printf("Enter Shape: ");
+    scanf(" %c", &shape);
+
+    if(shape == 'L' || shape == 'l')
+    {
+        int x1, y1, x2, y2;
+
+        printf("Enter x1 y1 x2 y2: ");
+        scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+
+        drawLine(x1, y1, x2, y2);
+    }
+
+    else if(shape == 'R' || shape == 'r')
+    {
+        int x1, y1, x2, y2;
+
+        printf("Enter x1 y1 x2 y2: ");
+        scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+
+        drawRectangle(x1, y1, x2, y2);
+    }
+
+    else if(shape == 'T' || shape == 't')
+    {
+        int x, y, size;
+
+        printf("Enter x y size: ");
+        scanf("%d%d%d", &x, &y, &size);
+
+        drawTriangle(x, y, size);
+    }
+
+    else if(shape == 'C' || shape == 'c')
+    {
+        int x, y, r;
+
+        printf("Enter centerX centerY radius: ");
+        scanf("%d%d%d", &x, &y, &r);
+
+        drawCircle(x, y, r);
+    }
+}
+
+// Delete Area
+void deleteArea(int x1, int y1, int x2, int y2)
+{
+    int i, j;
+
+    for(i = y1; i <= y2; i++)
+    {
+        for(j = x1; j <= x2; j++)
+        {
+            pic[i][j] = '_';
+        }
+    }
+}
+
+// Modify Rectangle
+void modifyRectangle()
+{
+    int oldx1, oldy1, oldx2, oldy2;
+    int newx1, newy1, newx2, newy2;
+
+    printf("Enter old rectangle coordinates:\n");
+    scanf("%d%d%d%d",
+          &oldx1, &oldy1,
+          &oldx2, &oldy2);
+
+    deleteArea(oldx1, oldy1, oldx2, oldy2);
+
+    printf("Enter new rectangle coordinates:\n");
+    scanf("%d%d%d%d",
+          &newx1, &newy1,
+          &newx2, &newy2);
+
+    drawRectangle(newx1, newy1, newx2, newy2);
+}
