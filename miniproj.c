@@ -193,3 +193,57 @@ void modifyRectangle()
 
     drawRectangle(newx1, newy1, newx2, newy2);
 }
+int main()
+{
+    int choice;
+    int x1, y1, x2, y2;
+
+    clearPicture();
+
+    do
+    {
+        printf("\n===== 2D Graphics Editor =====\n");
+        printf("1. Add Object\n");
+        printf("2. Delete Object\n");
+        printf("3. Modify Rectangle\n");
+        printf("4. Display Picture\n");
+        printf("5. Exit\n");
+
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                addObject();
+                break;
+
+            case 2:
+                printf("Enter x1 y1 x2 y2 to delete: ");
+                scanf("%d%d%d%d",
+                      &x1, &y1,
+                      &x2, &y2);
+
+                deleteArea(x1, y1, x2, y2);
+                break;
+
+            case 3:
+                modifyRectangle();
+                break;
+
+            case 4:
+                displayPicture();
+                break;
+
+            case 5:
+                printf("Program Ended.\n");
+                break;
+
+            default:
+                printf("Invalid Choice!\n");
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
