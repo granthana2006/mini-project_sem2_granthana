@@ -1,0 +1,673 @@
+Write functions to draw a circle, rectangle, line, and triangle.
+You should be able to
+add objects to the picture,
+delete objects from the picture, and
+modify objects in the picture.
+Use a 2d array of characters to store the picture.
+Write a function to display the picture. 
+
+THIS IS THE PROBLEM STATEMENT WHAT ARE THE MAJOR THIMGS I HAVE TO KEEP IN MIND WILL STARTING TO CODE THIS LIKE THE FUNCTIONS USED IN IT
+
+=Key C Concepts Used
+Functions
+Arrays (2D Array)
+Loops (for)
+Conditional Statements (if, switch)
+User Input (scanf)
+Character Array Storage
+Coordinates (x,y)
+Modular Programming
+
+Quick Planning Before Coding
+1. Create 2D array (canvas)
+2. Utility Functions
+   - isValid()
+   - clearPicture()
+   - displayPicture()
+3. Shape Functions
+   - drawLine()
+   - drawRectangle()
+   - drawTriangle()
+   - drawCircle()
+4. Object Functions
+   - addObject()
+   - deleteArea()
+   - modifyObject()
+5. Main Menu
+   - Add
+   - Delete
+   - Modify
+   - Display
+   - Exit 
+
+
+Things to keep in mind before coding
+Create a 2D character array
+char pic[ROWS][COLS];
+Utility Functions
+isValid()
+clearPicture()
+displayPicture()
+Shape Functions
+drawLine()
+drawRectangle()
+drawTriangle()
+drawCircle()
+
+Object Operations
+addObject()
+deleteArea()
+modifyObject()
+Menu in main()
+Add
+Delete
+Modify
+Display
+Exit
+
+Main Concepts Used
+2D Arrays
+Functions
+Loops (for)
+Conditions (if, switch)
+User Input (scanf)
+
+These are the major things you should plan before starting the code. 😊
+
+1.generate a code to draw a circle, rectangle, line, and triangle
+
+#include <stdio.h>
+#include <math.h>
+
+#define ROWS 20
+#define COLS 40
+
+char pic[ROWS][COLS];
+
+void clearPicture()
+{
+    int i, j;
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            pic[i][j] = '.';
+        }
+    }
+}
+
+void displayPicture()
+{
+    int i, j;
+
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            printf("%c ", pic[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int isValid(int x, int y)
+{
+    return (x >= 0 && x < COLS &&
+            y >= 0 && y < ROWS);
+}
+
+void drawLine(int x1, int y1, int x2, int y2)
+{
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+
+    int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+
+    float xInc = dx / (float)steps;
+    float yInc = dy / (float)steps;
+
+    float x = x1;
+    float y = y1;
+
+    int i;
+
+    for(i = 0; i <= steps; i++)
+    {
+        if(isValid((int)x, (int)y))
+            pic[(int)y][(int)x] = '#';
+
+        x += xInc;
+        y += yInc;
+    }
+}
+
+void drawRectangle(int x1, int y1, int x2, int y2)
+{
+    int i;
+
+    for(i = x1; i <= x2; i++)
+    {
+        if(isValid(i, y1)) pic[y1][i] = '#';
+        if(isValid(i, y2)) pic[y2][i] = '#';
+    }
+
+    for(i = y1; i <= y2; i++)
+    {
+        if(isValid(x1, i)) pic[i][x1] = '#';
+        if(isValid(x2, i)) pic[i][x2] = '#';
+    }
+}
+
+void drawTriangle(int x, int y, int size)
+{
+    int i;
+
+    for(i = 0; i < size; i++)
+    {
+        if(isValid(x-i, y+i))
+            pic[y+i][x-i] = '#';
+
+        if(isValid(x+i, y+i))
+            pic[y+i][x+i] = '#';
+    }
+
+    for(i = x-size+1; i <= x+size-1; i++)
+    {
+        if(isValid(i, y+size-1))
+            pic[y+size-1][i] = '#';
+    }
+}
+
+void drawCircle(int cx, int cy, int r)
+{
+    int x, y;
+
+    for(y = -r; y <= r; y++)
+    {
+        for(x = -r; x <= r; x++)
+        {
+            int value = x*x + y*y;
+
+            if(value >= r*r-r && value <= r*r+r)
+            {
+                if(isValid(cx+x, cy+y))
+                    pic[cy+y][cx+x] = '#';
+            }
+        }
+    }
+}
+
+int main()
+{
+    clearPicture();
+
+    drawLine(2, 2, 15, 10);
+    drawRectangle(20, 2, 35, 8);
+    drawTriangle(10, 12, 5);
+    drawCircle(30, 14, 4);
+
+    displayPicture();
+
+    return 0;
+}
+
+explain me this condition f(value >= r*r-r && value <= r*r+r)
+this condition is used in the circle drawing function:
+if(value >= r*r-r && value <= r*r+r)
+where
+value = x*x + y*y;
+Why is it used?
+The equation of a circle is:
+x2+y2=r2x^2+y^2=r^2x2+y2=r2hhhkkkrrr(x)2+(y)2=3.02(x)^2 + (y)^2 = 3.0^2(x)2+(y)2=3.02
+So for points exactly on the circle boundary:
+x*x + y*y = r*r
+But since we're drawing on a character grid, points don't fall exactly on the circle boundary.
+Therefore, instead of checking:
+value == r*r
+we allow a small range:
+r*r-r <= value <= r*r+r
+Example
+If:
+r = 4
+Then:
+r*r = 16
+The condition becomes:
+12 <= value <= 20
+So any point whose x*x + y*y is between 12 and 20 is marked as #.
+This creates a smooth circular outline on the grid instead of missing points. 😊
+
+       add objects to the picture,
+       delete objects from the picture, and
+       modify objects in the picture. 
+generate a code to fullfill this condition 
+To fulfill these three requirements:
+
+1. Add Object
+void addObject()
+{
+    drawRectangle(5, 5, 15, 10);
+}
+
+Adds a shape to the picture.
+
+2. Delete Object
+void deleteArea(int x1, int y1, int x2, int y2)
+{
+    int i, j;
+
+    for(i = y1; i <= y2; i++)
+    {
+        for(j = x1; j <= x2; j++)
+        {
+            if(isValid(j, i))
+            {
+                pic[i][j] = '.';
+            }
+        }
+    }
+}
+
+Removes a shape (or part of it) by replacing # with ..
+
+3. Modify Object
+void modifyRectangle()
+{
+    deleteArea(5, 5, 15, 10);
+
+    drawRectangle(20, 5, 30, 12);
+}
+
+Modification is simply:
+
+Delete old object
+Draw new object
+Menu Example
+int choice;
+
+printf("1. Add Object\n");
+printf("2. Delete Object\n");
+printf("3. Modify Object\n");
+
+scanf("%d", &choice);
+
+switch(choice)
+{
+    case 1:
+        addObject();
+        break;
+
+    case 2:
+        deleteArea(5, 5, 15, 10);
+        break;
+
+    case 3:
+        modifyRectangle();
+        break;
+}
+
+genereate a code to solvw this Use a 2d array of characters to store the picture.
+Write a function to display the picture
+For just this requirement:
+
+Use a 2D array of characters to store the picture.
+Write a function to display the picture.
+
+#include <stdio.h>
+
+#define ROWS 10
+#define COLS 20
+
+char pic[ROWS][COLS];
+
+void displayPicture()
+{
+    int i, j;
+
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            printf("%c ", pic[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int i, j;
+
+    /* Initialize picture */
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            pic[i][j] = '.';
+        }
+    }
+
+    /* Example objects */
+    pic[2][5] = '#';
+    pic[2][6] = '#';
+    pic[2][7] = '#';
+
+    displayPicture();
+
+    return 0;
+}
+Key Parts
+
+2D Array to store picture
+
+char pic[ROWS][COLS];
+
+Function to display picture
+
+void displayPicture()
+{
+    ...
+}
+
+This is the minimum code needed to satisfy that requirement.
+the complete code is:
+SO THIS IS THE CODE #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define ROWS 20
+#define COLS 40
+
+char pic[ROWS][COLS];
+
+/*-------------------- Utility Functions --------------------*/
+
+int isValid(int x, int y)
+{
+    return (x >= 0 && x < COLS &&
+            y >= 0 && y < ROWS);
+}
+
+void clearPicture()
+{
+    int i, j;
+
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            pic[i][j] = '.';
+        }
+    }
+}
+
+void displayPicture()
+{
+    int i, j;
+
+    printf("\n");
+
+    for(i = 0; i < ROWS; i++)
+    {
+        for(j = 0; j < COLS; j++)
+        {
+            printf("%c ", pic[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+/*-------------------- Shape Functions --------------------*/
+
+void drawLine(int x1, int y1, int x2, int y2)
+{
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+
+    int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+
+    float xInc = dx / (float)steps;
+    float yInc = dy / (float)steps;
+
+    float x = x1;
+    float y = y1;
+
+    int i;
+
+    for(i = 0; i <= steps; i++)
+    {
+        if(isValid((int)x, (int)y))
+        {
+            pic[(int)y][(int)x] = '#';
+        }
+
+        x += xInc;
+        y += yInc;
+    }
+}
+
+void drawRectangle(int x1, int y1, int x2, int y2)
+{
+    int i;
+
+    for(i = x1; i <= x2; i++)
+    {
+        if(isValid(i, y1))
+            pic[y1][i] = '#';
+
+        if(isValid(i, y2))
+            pic[y2][i] = '#';
+    }
+
+    for(i = y1; i <= y2; i++)
+    {
+        if(isValid(x1, i))
+            pic[i][x1] = '#';
+
+        if(isValid(x2, i))
+            pic[i][x2] = '#';
+    }
+}
+
+void drawTriangle(int x, int y, int size)
+{
+    int i;
+
+    for(i = 0; i < size; i++)
+    {
+        if(isValid(x-i, y+i))
+            pic[y+i][x-i] = '#';
+
+        if(isValid(x+i, y+i))
+            pic[y+i][x+i] = '#';
+    }
+
+    for(i = x-size+1; i <= x+size-1; i++)
+    {
+        if(isValid(i, y+size-1))
+            pic[y+size-1][i] = '#';
+    }
+}
+
+void drawCircle(int cx, int cy, int r)
+{
+    int x, y;
+
+    for(y = -r; y <= r; y++)
+    {
+        for(x = -r; x <= r; x++)
+        {
+            int value = x*x + y*y;
+
+            if(value >= r*r-r && value <= r*r+r)
+            {
+                if(isValid(cx+x, cy+y))
+                {
+                    pic[cy+y][cx+x] = '#';
+                }
+            }
+        }
+    }
+}
+
+/*-------------------- Object Operations --------------------*/
+
+void addObject()
+{
+    char shape;
+
+    printf("\nChoose Shape\n");
+    printf("L - Line\n");
+    printf("R - Rectangle\n");
+    printf("T - Triangle\n");
+    printf("C - Circle\n");
+
+    printf("Enter Shape: ");
+    scanf(" %c", &shape);
+
+    if(shape == 'L' || shape == 'l')
+    {
+        int x1, y1, x2, y2;
+
+        printf("Enter x1 y1 x2 y2: ");
+        scanf("%d%d%d%d",
+              &x1, &y1,
+              &x2, &y2);
+
+        drawLine(x1, y1, x2, y2);
+    }
+
+    else if(shape == 'R' || shape == 'r')
+    {
+        int x1, y1, x2, y2;
+
+        printf("Enter x1 y1 x2 y2: ");
+        scanf("%d%d%d%d",
+              &x1, &y1,
+              &x2, &y2);
+
+        drawRectangle(x1, y1, x2, y2);
+    }
+
+    else if(shape == 'T' || shape == 't')
+    {
+        int x, y, size;
+
+        printf("Enter x y size: ");
+        scanf("%d%d%d",
+              &x, &y,
+              &size);
+
+        drawTriangle(x, y, size);
+    }
+
+    else if(shape == 'C' || shape == 'c')
+    {
+        int x, y, r;
+
+        printf("Enter centerX centerY radius: ");
+        scanf("%d%d%d",
+              &x, &y,
+              &r);
+
+        drawCircle(x, y, r);
+    }
+}
+
+void deleteArea(int x1, int y1, int x2, int y2)
+{
+    int i, j;
+
+    for(i = y1; i <= y2; i++)
+    {
+        for(j = x1; j <= x2; j++)
+        {
+            if(isValid(j, i))
+            {
+                pic[i][j] = '.';
+            }
+        }
+    }
+}
+
+void modifyRectangle()
+{
+    int oldx1, oldy1, oldx2, oldy2;
+    int newx1, newy1, newx2, newy2;
+
+    printf("Enter old rectangle coordinates:\n");
+    scanf("%d%d%d%d",
+          &oldx1, &oldy1,
+          &oldx2, &oldy2);
+
+    deleteArea(oldx1, oldy1, oldx2, oldy2);
+
+    printf("Enter new rectangle coordinates:\n");
+    scanf("%d%d%d%d",
+          &newx1, &newy1,
+          &newx2, &newy2);
+
+    drawRectangle(newx1, newy1, newx2, newy2);
+}
+
+/*-------------------- Main Function --------------------*/
+
+int main()
+{
+    int choice;
+    int x1, y1, x2, y2;
+
+    clearPicture();
+
+    do
+    {
+        printf("\n========== GRAPHICS EDITOR ==========\n");
+        printf("1. Add Object\n");
+        printf("2. Delete Area\n");
+        printf("3. Modify Rectangle\n");
+        printf("4. Display Picture\n");
+        printf("5. Clear Canvas\n");
+        printf("6. Exit\n");
+
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                addObject();
+                break;
+
+            case 2:
+                printf("Enter x1 y1 x2 y2: ");
+                scanf("%d%d%d%d",
+                      &x1, &y1,
+                      &x2, &y2);
+
+                deleteArea(x1, y1, x2, y2);
+                break;
+
+            case 3:
+                modifyRectangle();
+                break;
+
+            case 4:
+                displayPicture();
+                break;
+
+            case 5:
+                clearPicture();
+                printf("Canvas Cleared Successfully!\n");
+                break;
+
+            case 6:
+                printf("Program Exited.\n");
+                break;
+
+            default:
+                printf("Invalid Choice!\n");
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
